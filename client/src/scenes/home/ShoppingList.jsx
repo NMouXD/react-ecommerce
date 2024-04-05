@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
@@ -7,6 +7,7 @@ import { Typography } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useDispatch, useSelector } from "react-redux";
 import { setItems } from "../../state";
+import axios from 'axios';
 
 const ShoppingList = () => {
   const dispatch = useDispatch();
@@ -18,27 +19,29 @@ const ShoppingList = () => {
     setValue(newValue);
   };
 
-  async function getItems() {
-    const items = await fetch(
-      "http://localhost:2000/api/items?populate=image",
-      { method: "GET" }
-    );
-    const itemsJson = await items.json();
-    dispatch(setItems(itemsJson.data));
-  }
+  // Função para buscar dados
+  const fetchProductData = useCallback(async () => {
+    try {
+      const response = await axios.get('http://localhost:3002/admin/productsListen');
+      dispatch(setItems(response.data));
+    } catch (error) {
+      console.error('Erro ao buscar dados:', error);
+    }
+  }, [dispatch]);
 
-  useEffect(() => {
-    getItems();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+   useEffect(() => {
+    // Chamada da função
+    fetchProductData();
+  }, [fetchProductData]); 
 
-  const topRatedItems = items.filter(
-    (item) => item.attributes.category === "topRated"
+  const ignite = items.filter(
+    (item) => item.brand === "ignite"
   );
-  const newArrivalsItems = items.filter(
-    (item) => item.attributes.category === "newArrivals"
+  const elfbar = items.filter(
+    (item) => item.brand === "elfbar"
   );
-  const bestSellersItems = items.filter(
-    (item) => item.attributes.category === "bestSellers"
+  const oxbar = items.filter(
+    (item) => item.brand === "oxbar"
   );
 
   return (
@@ -61,9 +64,9 @@ const ShoppingList = () => {
         }}
       >
         <Tab label="ALL" value="all" />
-        <Tab label="NEW ARRIVALS" value="newArrivals" />
-        <Tab label="BEST SELLERS" value="bestSellers" />
-        <Tab label="TOP RATED" value="topRated" />
+        <Tab label="Elfbar" value="elfbar" />
+        <Tab label="Oxbar" value="oxbar" />
+        <Tab label="Ignite" value="ignite" />
       </Tabs>
       <Box
         margin="0 auto"
@@ -75,19 +78,19 @@ const ShoppingList = () => {
       >
         {value === "all" &&
           items.map((item) => (
-            <Item item={item} key={`${item.name}-${item.id}`} />
+            <Item item={item} key={`${item.name}-${item._id}`} />
           ))}
-        {value === "newArrivals" &&
-          newArrivalsItems.map((item) => (
-            <Item item={item} key={`${item.name}-${item.id}`} />
+        {value === "elfbar" &&
+          elfbar.map((item) => (
+            <Item item={item} key={`${item.name}-${item._id}`} />
           ))}
-        {value === "bestSellers" &&
-          bestSellersItems.map((item) => (
-            <Item item={item} key={`${item.name}-${item.id}`} />
+        {value === "oxbar" &&
+          oxbar.map((item) => (
+            <Item item={item} key={`${item.name}-${item._id}`} />
           ))}
-        {value === "topRated" &&
-          topRatedItems.map((item) => (
-            <Item item={item} key={`${item.name}-${item.id}`} />
+        {value === "ignite" &&
+          ignite.map((item) => (
+            <Item item={item} key={`${item.name}-${item._id}`} />
           ))}
       </Box>
     </Box>

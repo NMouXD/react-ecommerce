@@ -7,6 +7,8 @@ import ItemDetails from "./scenes/itemDetails/ItemDetails";
 import CartMenu from "./scenes/global/CartMenu";
 import Checkout from "./scenes/checkout/Checkout";
 import Confirmation from "./scenes/checkout/Confirmation";
+import ProductForm from "./admin/admin";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -29,6 +31,11 @@ function App() {
           <Route path="item/:itemId" element={<ItemDetails />} />
           <Route path="checkout" element={<Checkout />} />
           <Route path="checkout/success" element={<Confirmation />} />
+          <Route path="admin" element={
+            <ProtectedRoute>
+              <ProductForm />
+            </ProtectedRoute>
+          } />
         </Routes>
         <CartMenu />
         <Footer />

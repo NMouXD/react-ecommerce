@@ -16,16 +16,8 @@ const Item = ({ item, width }) => {
     palette: { neutral },
   } = useTheme();
 
-  const { category, price, name, image } = item.attributes;
-  const {
-    data: {
-      attributes: {
-        formats: {
-          medium: { url },
-        },
-      },
-    },
-  } = image;
+  const { brand, price, name, image } = item;
+
 
   return (
     <Box width={width}>
@@ -38,8 +30,8 @@ const Item = ({ item, width }) => {
           alt={item.name}
           width="300px"
           height="400px"
-          src={`http://localhost:2000${url}`}
-          onClick={() => navigate(`/item/${item.id}`)}
+          src={`http://localhost:3002/${image}`}
+          onClick={() => navigate(`/item/${item._id}`)}
           style={{ cursor: "pointer" }}
         />
         <Box
@@ -79,7 +71,7 @@ const Item = ({ item, width }) => {
 
       <Box mt="3px">
         <Typography variant="subtitle2" color={neutral.dark}>
-          {category
+          {brand
             .replace(/([A-Z])/g, " $1")
             .replace(/^./, (str) => str.toUpperCase())}
         </Typography>

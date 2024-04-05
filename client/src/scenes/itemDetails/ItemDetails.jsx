@@ -10,39 +10,40 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { shades } from "../../theme";
 import { addToCart } from "../../state";
 import { useDispatch } from "react-redux";
+import axios from "axios";
 
 const ItemDetails = () => {
   const dispatch = useDispatch();
   const { itemId } = useParams();
   const [value, setValue] = useState("description");
   const [count, setCount] = useState(1);
-  const [item, setItem] = useState(null);
-  const [items, setItems] = useState([]);
+  const [item, setItem] = useState([]);
+  const [bestSellsers, setBestSellers] = useState([]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   async function getItem() {
-    const item = await fetch(
-      `http://localhost:2000/api/items/${itemId}?populate=image`,
-      {
-        method: "GET",
-      }
-    );
-    const itemJson = await item.json();
-    setItem(itemJson.data);
+    try {
+      const response = await axios.get(`http://localhost:3002/admin/productsId/${itemId}`);
+      setItem(response.data)
+      
+    } catch (error) {
+      console.error('Erro ao buscar dados:', error);
+    }
   }
 
+
   async function getItems() {
-    const items = await fetch(
-      `http://localhost:2000/api/items?populate=image`,
-      {
-        method: "GET",
-      }
-    );
-    const itemsJson = await items.json();
-    setItems(itemsJson.data);
+    try {
+      const response = await axios.get('http://localhost:3002/admin/bestSellers');
+      setBestSellers(response.data)
+
+    } catch (error) {
+
+      console.error('Erro ao buscar dados:', error);
+    }
   }
 
   useEffect(() => {
@@ -50,16 +51,17 @@ const ItemDetails = () => {
     getItems();
   }, [itemId]); // eslint-disable-line react-hooks/exhaustive-deps
 
+
   return (
     <Box width="80%" m="80px auto">
       <Box display="flex" flexWrap="wrap" columnGap="40px">
         {/* IMAGES */}
         <Box flex="1 1 40%" mb="40px">
           <img
-            alt={item?.name}
+            alt={item.name}
             width="100%"
             height="100%"
-            src={`http://localhost:2000${item?.attributes?.image?.data?.attributes?.formats?.medium?.url}`}
+            src={`http://localhost:3002/${item.image}`}
             style={{ objectFit: "contain" }}
           />
         </Box>
@@ -72,10 +74,10 @@ const ItemDetails = () => {
           </Box>
 
           <Box m="65px 0 25px 0">
-            <Typography variant="h3">{item?.attributes?.name}</Typography>
-            <Typography>${item?.attributes?.price}</Typography>
+            <Typography variant="h3">{item.name}</Typography>
+            <Typography>${item.price}</Typography>
             <Typography sx={{ mt: "20px" }}>
-              {item?.attributes?.longDescription}
+              {item.description}
             </Typography>
           </Box>
 
@@ -113,7 +115,7 @@ const ItemDetails = () => {
               <FavoriteBorderOutlinedIcon />
               <Typography sx={{ ml: "5px" }}>ADD TO WISHLIST</Typography>
             </Box>
-            <Typography>CATEGORIES: {item?.attributes?.category}</Typography>
+            <Typography>CATEGORIES: {item.brand}</Typography>
           </Box>
         </Box>
       </Box>
@@ -127,7 +129,7 @@ const ItemDetails = () => {
       </Box>
       <Box display="flex" flexWrap="wrap" gap="15px">
         {value === "description" && (
-          <div>{item?.attributes?.longDescription}</div>
+          <div>{item.description}</div>
         )}
         {value === "reviews" && <div>reviews</div>}
       </Box>
@@ -144,7 +146,7 @@ const ItemDetails = () => {
           columnGap="1.33%"
           justifyContent="space-between"
         >
-          {items.slice(0, 4).map((item, i) => (
+          {bestSellsers.slice(0, 4).map((item, i) => (
             <Item key={`${item.name}-${i}`} item={item} />
           ))}
         </Box>

@@ -1,13 +1,13 @@
 import ShoppingList from "./ShoppingList";
-import Subscribe from "./Subscribe";
+/* import Subscribe from "./Subscribe";
 import MainCarousel from "./MainCarousel";
-
+ */
 function Home() {
   return (
     <div className="home">
-      <MainCarousel />
+      {/* <MainCarousel /> */}
       <ShoppingList />
-      <Subscribe />
+      {/* <Subscribe /> */}
     </div>
   );
 }

@@ -24,13 +24,10 @@ function Footer() {
             mb="30px"
             color={shades.secondary[500]}
           >
-            ECOMMER
+            ML VAPE Shop
           </Typography>
           <div>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat
+          Projetada para destacar a qualidade e a singularidade de seus produtos: --- **Bem-vindo à ML VAPE Shop – A Excelência em Vaping Redefinida**
           </div>
         </Box>
 
@@ -38,7 +35,6 @@ function Footer() {
           <Typography variant="h4" fontWeight="bold" mb="30px">
             About Us
           </Typography>
-          <Typography mb="30px">Careers</Typography>
           <Typography mb="30px">Our Stores</Typography>
           <Typography mb="30px">Terms & Conditions</Typography>
           <Typography mb="30px">Privacy Policy</Typography>

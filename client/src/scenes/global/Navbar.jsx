@@ -21,7 +21,7 @@ function Navbar() {
       alignItems="center"
       width="100%"
       height="60px"
-      backgroundColor="rgba(255, 255, 255, 0.95)"
+      backgroundColor="#3c0d74"
       color="black"
       position="fixed"
       top="0"
@@ -38,7 +38,7 @@ function Navbar() {
         <Box
           onClick={() => navigate("/")}
           sx={{ "&:hover": { cursor: "pointer" } }}
-          color={shades.secondary[500]}
+          color="white"
         >
           ML VAPE Shop
         </Box>
@@ -51,7 +51,7 @@ function Navbar() {
           <IconButton sx={{ color: "black" }}>
             <SearchOutlined />
           </IconButton>
-          <IconButton sx={{ color: "black" }}>
+          <IconButton onClick={() => navigate("/login")} sx={{ color: "black" }}>
             <PersonOutline />
           </IconButton>
           <Badge

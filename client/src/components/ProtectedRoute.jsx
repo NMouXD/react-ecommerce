@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { getUserInfo } from '../services/userService';
+import { useSelector } from "react-redux";
 
 export const ProtectedRoute = ({ children }) => {
   const [userRole, setUserRole] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-
+  const userInfo = useSelector((state) => state.cart.user);
+  console.log(userInfo)
   useEffect(() => {
     const fetchUserInfo = async () => {
-      const userInfo = await getUserInfo();
+      
+  
       if (userInfo && userInfo.role) {
         setUserRole(userInfo.role);
       }

@@ -12,6 +12,7 @@ import {
   setIsCartOpen,
 } from "../../state";
 import { useNavigate } from "react-router-dom";
+import Navbar from "./Navbar";
 
 const FlexBox = styled(Box)`
   display: flex;
@@ -24,8 +25,6 @@ const CartMenu = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.cart);
   const isCartOpen = useSelector((state) => state.cart.isCartOpen);
-
-   console.log(cart) 
 
   const totalPrice = cart.reduce((total, item) => {
     return total + item.count * item.price;
@@ -45,6 +44,7 @@ const CartMenu = () => {
       top="0"
       overflow="auto"
     >
+      <Navbar/>
       <Box
         position="fixed"
         right="0"

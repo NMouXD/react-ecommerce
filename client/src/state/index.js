@@ -4,6 +4,7 @@ const initialState = {
   isCartOpen: false,
   cart: [],
   items: [],
+  user: null,
 };
 
 export const cartSlice = createSlice({
@@ -44,6 +45,10 @@ export const cartSlice = createSlice({
     setIsCartOpen: (state) => {
       state.isCartOpen = !state.isCartOpen;
     },
+
+    setUser: (state, action) => {
+      state.user = action.payload;
+    },
   },
 });
 
@@ -54,6 +59,7 @@ export const {
   increaseCount,
   decreaseCount,
   setIsCartOpen,
+  setUser,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

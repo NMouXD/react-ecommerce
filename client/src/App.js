@@ -9,6 +9,11 @@ import Checkout from "./scenes/checkout/Checkout";
 import Confirmation from "./scenes/checkout/Confirmation";
 import ProductForm from "./admin/admin";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import Login from './components/Login';
+import Signup from './components/Signup';/* 
+import { FetchUser } from "./services/userService"; */
+
+
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -20,6 +25,10 @@ const ScrollToTop = () => {
   return null;
 };
 
+
+/* FetchUser() */
+
+
 function App() {
   return (
     <div className="app">
@@ -27,6 +36,8 @@ function App() {
         <Navbar />
         <ScrollToTop />
         <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/" element={<Home />} />
           <Route path="item/:itemId" element={<ItemDetails />} />
           <Route path="checkout" element={<Checkout />} />

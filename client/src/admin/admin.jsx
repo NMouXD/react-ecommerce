@@ -55,8 +55,8 @@ function ProductForm() {
         flexDirection: 'column',
         alignItems: 'center',
         width: '80%',
-        height: '80%', // Ajuste da altura
-        margin: '0 auto',
+        height: '90%', 
+        margin: '5rem auto',
       }}
       onSubmit={handleSubmit}
       noValidate

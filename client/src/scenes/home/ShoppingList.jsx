@@ -7,7 +7,7 @@ import { Typography } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useDispatch, useSelector } from "react-redux";
 import { setItems } from "../../state";
-import axios from 'axios';
+import axiosInstance from "../../context/axiosConfig";
 
 const ShoppingList = () => {
   const dispatch = useDispatch();
@@ -22,7 +22,7 @@ const ShoppingList = () => {
   // Função para buscar dados
   const fetchProductData = useCallback(async () => {
     try {
-      const response = await axios.get('http://localhost:3002/admin/productsListen');
+      const response = await axiosInstance.get('/admin/productsListen');
       dispatch(setItems(response.data));
     } catch (error) {
       console.error('Erro ao buscar dados:', error);

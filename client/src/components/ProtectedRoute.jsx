@@ -6,10 +6,9 @@ export const ProtectedRoute = ({ children }) => {
   const [userRole, setUserRole] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const userInfo = useSelector((state) => state.cart.user);
-  console.log(userInfo)
+
   useEffect(() => {
     const fetchUserInfo = async () => {
-      
   
       if (userInfo && userInfo.role) {
         setUserRole(userInfo.role);
@@ -18,7 +17,7 @@ export const ProtectedRoute = ({ children }) => {
     };
 
     fetchUserInfo();
-  }, []);
+  }, [userInfo]);
 
   if (isLoading) {
     return <div>Loading...</div>; // Ou qualquer componente de loading que você preferir

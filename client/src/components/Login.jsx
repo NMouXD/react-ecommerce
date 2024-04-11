@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { TextField, Button, Container, Typography } from '@mui/material';
-import axios from 'axios';
-import { useAuthDispatch } from '../context/AuthContext';
+import axiosInstance from '../context/axiosConfig';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -9,7 +8,7 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const { data } = await axios.post('http://localhost:3002/user/login', { email, password });
+      const { data } = await axiosInstance.post('/user/login', { email, password });
       localStorage.setItem('token', data.token);
     } catch (error) {
       console.error('Login failed:', error);

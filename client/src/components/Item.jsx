@@ -30,7 +30,7 @@ const Item = ({ item, width }) => {
           alt={item.name}
           width="300px"
           height="400px"
-          src={`http://localhost:3002/${image}`}
+          src={`https://ml-vipe-shop.onrender.com/${image}`}
           onClick={() => navigate(`/item/${item._id}`)}
           style={{ cursor: "pointer" }}
         />

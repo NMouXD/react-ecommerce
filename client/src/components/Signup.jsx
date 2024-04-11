@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TextField, Button, Container, Typography } from '@mui/material';
-import axios from 'axios';
+import axiosInstance from '../context/axiosConfig';
 
 const Signup = () => {
   const [user, setUser] = useState({
@@ -22,7 +22,7 @@ const Signup = () => {
 
   const handleSignup = async () => {
     try {
-      await axios.post('http://localhost:3002/user/register', user);
+      await axiosInstance.post('/user/register', user);
       // Handle success (e.g., show message, redirect to login)
     } catch (error) {
       console.error('Signup failed:', error);
@@ -101,6 +101,15 @@ const Signup = () => {
       <TextField
         label="Password"
         name="password"
+        fullWidth
+        value={user.password}
+        onChange={handleChange}
+        margin="normal"
+        type="password"
+      />
+      <TextField
+        label="Comfirme Password"
+        name="confirme-password"
         fullWidth
         value={user.password}
         onChange={handleChange}

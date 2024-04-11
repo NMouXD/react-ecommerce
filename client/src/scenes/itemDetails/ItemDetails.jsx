@@ -10,7 +10,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { shades } from "../../theme";
 import { addToCart } from "../../state";
 import { useDispatch } from "react-redux";
-import axios from "axios";
+import axiosInstance from "../../context/axiosConfig";
 
 const ItemDetails = () => {
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ const ItemDetails = () => {
 
   async function getItem() {
     try {
-      const response = await axios.get(`http://localhost:3002/admin/productsId/${itemId}`);
+      const response = await axiosInstance.get(`/admin/productsId/${itemId}`);
       setItem(response.data)
       
     } catch (error) {
@@ -37,7 +37,7 @@ const ItemDetails = () => {
 
   async function getItems() {
     try {
-      const response = await axios.get('http://localhost:3002/admin/bestSellers');
+      const response = await axiosInstance.get('/admin/bestSellers');
       setBestSellers(response.data)
 
     } catch (error) {
@@ -61,7 +61,7 @@ const ItemDetails = () => {
             alt={item.name}
             width="100%"
             height="100%"
-            src={`http://localhost:3002/${item.image}`}
+            src={`https://ml-vipe-shop.onrender.com/${item.image}`}
             style={{ objectFit: "contain" }}
           />
         </Box>

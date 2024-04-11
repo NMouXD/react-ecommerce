@@ -12,7 +12,6 @@ import {
   setIsCartOpen,
 } from "../../state";
 import { useNavigate } from "react-router-dom";
-import Navbar from "./Navbar";
 
 const FlexBox = styled(Box)`
   display: flex;
@@ -44,7 +43,6 @@ const CartMenu = () => {
       top="0"
       overflow="auto"
     >
-      <Navbar/>
       <Box
         position="fixed"
         right="0"
@@ -72,7 +70,7 @@ const CartMenu = () => {
                       alt={item?.name}
                       width="123px"
                       height="164px"
-                      src={`http://localhost:3002/${item.image}`}
+                      src={`https://ml-vipe-shop.onrender.com/${item.image}`}
                     />
                   </Box>
                   <Box flex="1 1 60%">

@@ -1,9 +1,12 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, IconButton } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 function Footer() {
-  
+
+  const navigate = useNavigate();
+
   return (
-    <Box marginTop="70px" padding="40px 0" backgroundColor="#3c0d74">
+    <Box marginTop="70px" padding="40px 0" backgroundColor="#3c0d74" color="white">
       <Box
         width="80%"
         margin="auto"
@@ -14,49 +17,35 @@ function Footer() {
         columnGap="clamp(20px, 30px, 40px)"
       >
         <Box width="clamp(20%, 30%, 40%)">
-          <Typography
-            variant="h4"
-            fontWeight="bold"
-            mb="30px"
-            color="white"
-          >
-            ML VAPE Shop
-          </Typography>
-          <div>
-          Projetada para destacar a qualidade e a singularidade de seus produtos: --- **Bem-vindo à ML VAPE Shop – A Excelência em Vaping Redefinida**
-          </div>
-        </Box>
-
-        <Box>
+          <Typography variant="h3" fontWeight="bold" mb="30px">ML Vipe Shop</Typography>
           <Typography variant="h4" fontWeight="bold" mb="30px">
-            About Us
+            Projetada para destacar a qualidade e a singularidade de seus produtos: --- **Bem-vindo à ML VAPE Shop – A Excelência em Vaping Redefinida**
           </Typography>
-          <Typography mb="30px">Our Stores</Typography>
-          <Typography mb="30px">Terms & Conditions</Typography>
-          <Typography mb="30px">Privacy Policy</Typography>
         </Box>
 
-        <Box>
-          <Typography variant="h4" fontWeight="bold" mb="30px">
-            Customer Care
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
+          <Typography variant="h3" fontWeight="bold" mb="30px">
+            Sobre Nós
           </Typography>
-          <Typography mb="30px">Help Center</Typography>
-          <Typography mb="30px">Track Your Order</Typography>
-          <Typography mb="30px">Corporate & Bulk Purchasing</Typography>
-          <Typography mb="30px">Returns & Refunds</Typography>
+          <IconButton  sx={{color:'white'}} onClick={() => navigate("/sobrenos")}>
+          <Typography>Sobre Nossa loja</Typography>
+          </IconButton>
+          <IconButton sx={{color:'white'}} onClick={() => navigate("/termosecondicoes")}>
+            <Typography mb="30px" >Termos e Condições</Typography>
+          </IconButton>
+          <IconButton sx={{color:'white'}} onClick={() => navigate("/politicadeprivacidade")}>
+            <Typography mb="30px">Politicas de Privacidade</Typography>
+          </IconButton>
         </Box>
 
-        <Box width="clamp(20%, 25%, 30%)">
+        <Box width="clamp(20%, 25%, 30%)" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
           <Typography variant="h4" fontWeight="bold" mb="30px">
             Contact Us
-          </Typography>
-          <Typography mb="30px">
-            50 north Whatever Blvd, Washington, DC 10501
           </Typography>
           <Typography mb="30px" sx={{ wordWrap: "break-word" }}>
             Email: mredwardroh@gmail.com
           </Typography>
-          <Typography mb="30px">(222)333-4444</Typography>
+          <Typography mb="30px">(+55) 34 99726-7144</Typography>
         </Box>
       </Box>
     </Box>

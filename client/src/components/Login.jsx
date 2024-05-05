@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { TextField, Button, Container, Typography } from '@mui/material';
 import axiosInstance from '../context/axiosConfig';
+import WhatsAppButton from "../components/WhatsAppButton";
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -16,6 +17,7 @@ const Login = () => {
   };
 
   return (
+    <>
     <Container maxWidth="xs" sx={{ height: '80vh', padding: "5rem 0" }}>
       <Typography variant="h5">Login</Typography>
       <TextField
@@ -37,6 +39,8 @@ const Login = () => {
         Login
       </Button>
     </Container>
+    <WhatsAppButton/>
+    </>
   );
 };
 

@@ -1,4 +1,4 @@
-import { Box, Button, Divider, IconButton, Typography } from "@mui/material";
+import { Box, Button, Divider, IconButton, Typography} from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
@@ -31,7 +31,6 @@ const CartMenu = () => {
     return total + item.count * item.price;
   }, 0);
 
-  console.log(totalPrice) 
 
   return (
     <Box
@@ -49,7 +48,7 @@ const CartMenu = () => {
         position="fixed"
         right="0"
         bottom="0"
-        width="max(400px, 30%)"
+        width="max(375px, 30%)"
         height="100%"
         backgroundColor="white"
       >

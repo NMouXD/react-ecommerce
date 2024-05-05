@@ -1,100 +1,97 @@
-import React, { useCallback, useEffect, useState } from "react";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Box from "@mui/material/Box";
-import Item from "../../components/Item";
-import { Typography } from "@mui/material";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { useDispatch, useSelector } from "react-redux";
-import { setItems } from "../../state";
-import axiosInstance from "../../context/axiosConfig";
+import React, { useState, useEffect } from "react";
+import { Box, Tabs, Tab, Grid, useTheme, useMediaQuery } from "@mui/material";
+import axios from "axios";
+import { ProdutoCard } from "../../components/ProdutoCard";
 
 const ShoppingList = () => {
-  const dispatch = useDispatch();
-  const [value, setValue] = useState("all");
-  const items = useSelector((state) => state.cart.items);
-  const breakPoint = useMediaQuery("(min-width:600px)");
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down("sm"));
+  const [categorias, setCategorias] = useState([]);
+  const [produtos, setProdutos] = useState({});
+  const [categoriaAtual, setCategoriaAtual] = useState("");
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  useEffect(() => {
+    axios
+      .get("http://localhost:3002/admin/productsListen")
+      .then((response) => {
+        const dados = response.data; // Assumindo que a resposta é um array de produtos
+        const produtosOrganizados = dados.reduce((acc, produto) => {
+          const { categoria } = produto;
+          if (!acc[categoria]) {
+            acc[categoria] = [];
+          }
+          acc[categoria].push(produto);
+          return acc;
+        }, {});
+
+        // Adicionando produtos mais vendidos apenas se houver produtos elegíveis
+        const maisVendidos = dados
+          .filter((produto) => produto.bestSellers >= 0)
+          .sort((a, b) => b.bestSellers - a.bestSellers);
+
+        // Certifique-se de adicionar 'Mais Vendidos' apenas uma vez
+        if (maisVendidos.length > 0) {
+          produtosOrganizados["Mais Vendidos"] = maisVendidos;
+        }
+
+        let categoriasUnicas = [...new Set(Object.keys(produtosOrganizados))];
+        // Se 'Mais Vendidos' está presente, garanta que ele apareça primeiro
+        if (categoriasUnicas.includes("Mais Vendidos")) {
+          categoriasUnicas = [
+            "Mais Vendidos",
+            ...categoriasUnicas.filter((c) => c !== "Mais Vendidos"),
+          ];
+        }
+
+        setCategorias(categoriasUnicas);
+        setProdutos(produtosOrganizados);
+        setCategoriaAtual(categoriasUnicas[0]);
+      })
+      .catch((error) => console.error("Erro ao buscar produtos:", error));
+  }, []);
+
+  const handleChangeCategoria = (evento, novaCategoria) => {
+    setCategoriaAtual(novaCategoria);
   };
 
-  // Função para buscar dados
-  const fetchProductData = useCallback(async () => {
-    try {
-      const response = await axiosInstance.get('/admin/productsListen');
-      dispatch(setItems(response.data));
-    } catch (error) {
-      console.error('Erro ao buscar dados:', error);
-    }
-  }, [dispatch]);
-
-   useEffect(() => {
-    // Chamada da função
-    fetchProductData();
-  }, [fetchProductData]); 
-
-  const ignite = items.filter(
-    (item) => item.brand === "ignite"
-  );
-  const elfbar = items.filter(
-    (item) => item.brand === "elfbar"
-  );
-  const oxbar = items.filter(
-    (item) => item.brand === "oxbar"
-  );
-
   return (
-    <Box width="80%" margin="80px auto">
-      <Typography variant="h3" textAlign="center">
-        Our Featured <b>Products</b>
-      </Typography>
+    <Box
+      sx={{ flexGrow: 1, paddingTop: "70px" }}
+      width={matches ? "100%" : "80%"}
+      margin={matches ? "0" : "0 10%"}
+    >
       <Tabs
-        textColor="primary"
-        indicatorColor="primary"
-        value={value}
-        onChange={handleChange}
-        centered
-        TabIndicatorProps={{ sx: { display: breakPoint ? "block" : "none" } }}
+        value={categoriaAtual}
+        onChange={handleChangeCategoria}
+        variant= {matches ? "scrollable" : "none"}
+        scrollButtons={matches ? "auto" : "none"}
+        allowScrollButtonsMobile
+        aria-label="Categorias dos produtos"
+        centered={true}
         sx={{
-          m: "25px",
-          "& .MuiTabs-flexContainer": {
-            flexWrap: "wrap",
-          },
+          marginBottom: "2rem"
         }}
       >
-        <Tab label="ALL" value="all" />
-        <Tab label="Elfbar" value="elfbar" />
-        <Tab label="Oxbar" value="oxbar" />
-        <Tab label="Ignite" value="ignite" />
+        {categorias.map((categoria) => (
+          <Tab label={categoria} value={categoria} key={categoria} />
+        ))}
       </Tabs>
-      <Box
-        margin="0 auto"
-        display="grid"
-        gridTemplateColumns="repeat(auto-fill, 300px)"
-        justifyContent="space-around"
-        rowGap="20px"
-        columnGap="1.33%"
+      <Grid
+        container
+        spacing={matches ? 1 : 2}
+        sx={{
+          maxWidth: 800,
+          margin: "0 auto",
+          paddingTop: "20px",
+        }}
       >
-        {value === "all" &&
-          items.map((item) => (
-            <Item item={item} key={`${item.name}-${item._id}`} />
-          ))}
-        {value === "elfbar" &&
-          elfbar.map((item) => (
-            <Item item={item} key={`${item.name}-${item._id}`} />
-          ))}
-        {value === "oxbar" &&
-          oxbar.map((item) => (
-            <Item item={item} key={`${item.name}-${item._id}`} />
-          ))}
-        {value === "ignite" &&
-          ignite.map((item) => (
-            <Item item={item} key={`${item.name}-${item._id}`} />
-          ))}
-      </Box>
+        {produtos[categoriaAtual]?.map((item) => (
+          <Grid item xs={6} sm={6} md={4} lg={3} key={item._id}>
+            <ProdutoCard key={item.nome} item={item} />
+          </Grid>
+        ))}
+      </Grid>
     </Box>
   );
 };
-
 export default ShoppingList;

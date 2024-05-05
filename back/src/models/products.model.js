@@ -1,40 +1,36 @@
-import mongoose  from "mongoose";
+import mongoose from "mongoose";
+const Schema = mongoose.Schema;
 
-
-// Definindo o esquema do Produto
-const productSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true
-  },
-  brand:{
-    type: String,
-    required: true
-  },
-  description: {
-    type: String,
-    required: true
-  },
-  price: {
-    type: Number,
-    required: true
-  },
+const variacaoSchema = new Schema({
+  nome: { type: String, required: true },
+  imagemUrl: { type: String, required: true },
   volume: {
     type: Number,
     required: true
   },
-  bestSellers: {
-    type: Number,
-    default: 0,
-  },
-  image: {
-    type: String, // URL da imagem ou caminho do arquivo
-    required: false
-  }
 });
 
-// Compilando o modelo a partir do esquema
-const Product = mongoose.model('Product', productSchema);
+const descricaoSchema = new Schema({
+  
+});
 
-// Exportando o modelo
-export default Product;
+const produtoSchema = new Schema({
+  nome: { type: String, required: true },
+  descricaoTitle : { type: String, required: true },
+  descricaoText : { type: String, required: true },
+  caracteristicasTitle : {type: String, required: true},
+  caracteristicasText : {type: String, required: true},
+  instrucaoTitle : { type: String, required: true},
+  instrucaoText : { type: String, required: true},
+  preco: { type: Number, required: true },
+  imagensUrl: [String],  
+  variacoes: [variacaoSchema],  // Variações como cores ou sabores
+  categoria: { type: String, required: true },
+  bestSellers: { type: Number, default: 0 },
+  off: { type: Number, required: true},
+  offPix:{type: Number, required: true}
+});
+
+const Produto = mongoose.model('Produto', produtoSchema);
+
+export default Produto

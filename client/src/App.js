@@ -12,6 +12,8 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 import Login from './components/Login';
 import Signup from './components/Signup';/* 
 import { FetchUser } from "./services/userService"; */
+import TermsAndConditions from "./components/TermosCondicoes";
+import PrivacyPolicy from "./components/PoliticaPrivacidade";
 
 
 
@@ -39,9 +41,11 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/" element={<Home />} />
-          <Route path="item/:itemId" element={<ItemDetails />} />
+          <Route path="item/:id" element={<ItemDetails />} />
           <Route path="checkout" element={<Checkout />} />
           <Route path="checkout/success" element={<Confirmation />} />
+          <Route path="/termosecondicoes" element={<TermsAndConditions />} />
+          <Route path="/politicadeprivacidade" element={<PrivacyPolicy />} />
           <Route path="admin" element={
             <ProtectedRoute>
               <ProductForm />

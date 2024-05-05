@@ -1,87 +1,66 @@
-import Product from "../models/products.model.js";
+import Produto from "../models/products.model.js";
 
-const productController = {
-    // Criar um novo Produto
-    createProduct: async (req, res) => {
-        try {
-
-            const {name, description, price, volume, brand} = req.body
-            const file = req.file
-
-            /* if(!name || !description || !price || !volume || !image){
-                return res.status(400).json({"message": "preencha todos os campos"})
-            } */
-
-            const product = new Product({name, description, price, volume, brand, image: file.path});
-
-            await product.save();
-
-            res.status(201).json(product);
-
-        } catch (error) {
-            res.status(400).json(error);
-        }
-    },
-
-    // Ler todos os Produtos
-    getAllProducts: async (req, res) => {
-        try {
-            const products = await Product.find({});
-            res.status(200).json(products);
-        } catch (error) {
-            res.status(500).json(error);
-        }
-    },
-
-    // Ler um Produto pelo ID
-    getProductById: async (req, res) => {
-        try {
-            const product = await Product.findById(req.params.id);
-            if (!product) {
-                return res.status(404).json();
-            }
-            res.status(200).json(product);
-        } catch (error) {
-            res.status(500).json(error);
-        }
-    },
-
-    // Atualizar um Produto pelo ID
-    updateProduct: async (req, res) => {
-        try {
-            const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
-            if (!product) {
-                return res.status(404).json({ message: 'Produto não encontrado' });
-            }
-            res.status(200).json(product);
-        } catch (error) {
-            res.status(400).json(error);
-        }
-    },
-
-    // Deletar um Produto pelo ID
-    deleteProduct: async (req, res) => {
-        try {
-            const product = await Product.findByIdAndDelete(req.params.id);
-            if (!product) {
-                return res.status(404).json();
-            }
-            res.status(200).json(product);
-        } catch (error) {
-            res.status(500).json(error);
-        }
-    },
-
-    getBestSellers: async (req, res) => {
-        try {
-          // Busca os produtos e ordena pelo campo 'bestSellers' em ordem decrescente
-          const products = await Product.find().sort({ bestSellers: -1 });
-          res.json(products);
-        } catch (error) {
-          console.error('Erro ao buscar os produtos mais vendidos:', error);
-          res.status(500).send('Erro ao buscar os produtos mais vendidos');
-        }
-      }
+// Adicionar um novo produto
+export const adicionarProduto = async (req, res) => {
+  try {
+    const { nome, descricao, preco, categoria, off, offPix, descricaoTitle, descricaoText, caracteristicasTitle, caracteristicasText, instrucaoTitle, instrucaoText } = req.body;
+    const file = req.file;
+    const novoProduto = new Produto({ nome, descricao, preco, categoria, off, offPix, imagensUrl: file.path, descricaoTitle, descricaoText, caracteristicasTitle, caracteristicasText, instrucaoTitle, instrucaoText });
+    const produtoSalvo = await novoProduto.save();
+    res.status(201).json(produtoSalvo);
+  } catch (error) {
+    res.status(400).json({ mensagem: 'Erro ao adicionar produto', error });
+  }
 };
 
-export default productController
+// Obter todos os produtos
+export const obterProdutos = async (req, res) => {
+  try {
+    const produtos = await Produto.find();
+    res.json(produtos);
+  } catch (error) {
+    res.status(500).json({ mensagem: 'Erro ao obter produtos', error });
+  }
+};
+
+// Obter um produto pelo ID
+export const obterProdutoPorId = async (req, res) => {
+  try {
+    const produto = await Produto.findById(req.params.id);
+    if (!produto) return res.status(404).json({ mensagem: 'Produto não encontrado' });
+    res.json(produto);
+  } catch (error) {
+    res.status(500).json({ mensagem: 'Erro ao obter produto', error });
+  }
+};
+
+// Atualizar um produto
+export const atualizarProduto = async (req, res) => {
+  try {
+    const produtoAtualizado = await Produto.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!produtoAtualizado) return res.status(404).json({ mensagem: 'Produto não encontrado' });
+    res.json(produtoAtualizado);
+  } catch (error) {
+    res.status(400).json({ mensagem: 'Erro ao atualizar produto', error });
+  }
+};
+
+// Deletar um produto
+export const deletarProduto = async (req, res) => {
+  try {
+    const produtoDeletado = await Produto.findByIdAndDelete(req.params.id);
+    if (!produtoDeletado) return res.status(404).json({ mensagem: 'Produto não encontrado' });
+    res.json({ mensagem: 'Produto deletado com sucesso' });
+  } catch (error) {
+    res.status(500).json({ mensagem: 'Erro ao deletar produto', error });
+  }
+};
+
+export const buscarBestSellers = async (req, res) => {
+  try {
+    const produtos = await Produto.find().sort({ bestSellers: 1 }).exec();
+    res.json(produtos);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

@@ -4,15 +4,19 @@ import {
   PersonOutline,
   ShoppingBagOutlined,
   MenuOutlined,
-  SearchOutlined,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { setIsCartOpen } from "../../state";
+import { WhatsApp } from "@mui/icons-material";
 
 function Navbar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.cart);
+
+  const handleClickWhats = () => {
+    window.open('https://wa.me/5534997267144', '_blank');
+  };
 
   return (
     <Box
@@ -47,10 +51,10 @@ function Navbar() {
           columnGap="20px"
           zIndex="2"
         >
-          <IconButton sx={{ color: "black" }}>
-            <SearchOutlined />
+          <IconButton sx={{ color: "white" }} onClick={handleClickWhats}>
+            <WhatsApp/>
           </IconButton>
-          <IconButton onClick={() => navigate("/login")} sx={{ color: "black" }}>
+          <IconButton onClick={() => navigate("/login")} sx={{ color: "white" }}>
             <PersonOutline />
           </IconButton>
           <Badge
@@ -69,12 +73,12 @@ function Navbar() {
           >
             <IconButton
               onClick={() => dispatch(setIsCartOpen({}))}
-              sx={{ color: "black" }}
+              sx={{ color: "white" }}
             >
               <ShoppingBagOutlined />
             </IconButton>
           </Badge>
-          <IconButton sx={{ color: "black" }}>
+          <IconButton sx={{ color: "white" }}>
             <MenuOutlined />
           </IconButton>
         </Box>

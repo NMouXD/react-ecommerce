@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button, Container, Typography } from '@mui/material';
+import { TextField, Button, Container, Typography} from '@mui/material';
 import axiosInstance from '../context/axiosConfig';
 import WhatsAppButton from "../components/WhatsAppButton";
 
@@ -18,7 +18,7 @@ const Login = () => {
 
   return (
     <>
-    <Container maxWidth="xs" sx={{ height: '80vh', padding: "5rem 0" }}>
+    <Container maxWidth="xs" sx={{ height: '80vh', padding: "5rem 0"}}>
       <Typography variant="h5">Login</Typography>
       <TextField
         label="Email"
@@ -35,7 +35,7 @@ const Login = () => {
         onChange={(e) => setPassword(e.target.value)}
         margin="normal"
       />
-      <Button onClick={handleLogin} variant="contained" color="primary" fullWidth>
+      <Button onClick={handleLogin} variant="contained" color="primary" fullWidth sx={{background:"#3c0d74"}}>
         Login
       </Button>
     </Container>

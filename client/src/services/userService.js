@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import axios from 'axios';
 import { setUser } from '../state';
+import axiosInstance from '../context/axiosConfig';
 
 export const FetchUser = () => {
   const dispatch = useDispatch();
@@ -11,7 +11,7 @@ export const FetchUser = () => {
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          const response = await axios.get('http://localhost:3002/user/userId', {
+          const response = await axiosInstance.get('http://localhost:3002/user/userId', {
             headers: {
               Authorization: `Bearer ${token}`,
             },

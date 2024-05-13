@@ -1,4 +1,4 @@
-import { Box, Button, Divider, IconButton, Typography} from "@mui/material";
+import { Box, Button, Divider, IconButton, Typography, useMediaQuery, useTheme} from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
@@ -12,8 +12,7 @@ import {
   setIsCartOpen,
 } from "../../state";
 import { useNavigate } from "react-router-dom";
-
-/* dfasdf */
+import Navbar from "./Navbar";
 
 const FlexBox = styled(Box)`
   display: flex;
@@ -26,13 +25,27 @@ const CartMenu = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.cart);
   const isCartOpen = useSelector((state) => state.cart.isCartOpen);
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down("sm"));
+
+  console.log(cart)
 
   const totalPrice = cart.reduce((total, item) => {
-    return total + item.count * item.price;
+    return total + item.count * item.preco;
   }, 0);
 
+  const descontoOff = cart.reduce((total, item) => {
+    return total + item.count * item.preco * (1 - item.off / 100);
+  }, 0);
+
+  const descontoPix = cart.reduce((total, item) => {
+    return total + item.count * item.preco * (1 - item.offPix / 100);
+  }, 0);
+
+  console.log(descontoOff, descontoPix)
 
   return (
+    
     <Box
       display={isCartOpen ? "block" : "none"}
       backgroundColor="rgba(0, 0, 0, 0.4)"
@@ -44,11 +57,12 @@ const CartMenu = () => {
       top="0"
       overflow="auto"
     >
+      {matches ? (<Navbar/>) : (<></>)}
       <Box
         position="fixed"
         right="0"
         bottom="0"
-        width="max(375px, 30%)"
+        width= {matches ? "100%" : "max(400px, 30%)"}
         height="100%"
         backgroundColor="white"
       >
@@ -64,20 +78,20 @@ const CartMenu = () => {
           {/* CART LIST */}
           <Box>
             {cart.map((item) => (
-              <Box key={`${item.name}-${item._id}`}>
+              <Box key={`${item.selectedVariation.nome}-${item._id}`}>
                 <FlexBox p="15px 0">
                   <Box flex="1 1 40%">
                     <img
-                      alt={item?.name}
+                      alt={item?.nome}
                       width="123px"
                       height="164px"
-                      src={`https://ml-vipe-shop.onrender.com/${item.image}`}
+                      src={`https://ml-vipe-shop.onrender.com/${item.selectedVariation.imagemUrl}`}
                     />
                   </Box>
                   <Box flex="1 1 60%">
                     <FlexBox mb="5px">
                       <Typography fontWeight="bold">
-                        {item.name}
+                        {item.nome}
                       </Typography>
                       <IconButton
                         onClick={() =>
@@ -87,7 +101,7 @@ const CartMenu = () => {
                         <CloseIcon />
                       </IconButton>
                     </FlexBox>
-                    <Typography>{item.description}</Typography>
+                    <Typography>{item.selectedVariation.nome}</Typography>
                     <FlexBox m="15px 0">
                       <Box
                         display="flex"
@@ -96,7 +110,7 @@ const CartMenu = () => {
                       >
                         <IconButton
                           onClick={() =>
-                            dispatch(decreaseCount({ _id: item._id }))
+                            dispatch(decreaseCount({ _id: item.selectedVariation._id }))
                           }
                         >
                           <RemoveIcon />
@@ -104,14 +118,14 @@ const CartMenu = () => {
                         <Typography>{item.count}</Typography>
                         <IconButton
                           onClick={() =>
-                            dispatch(increaseCount({ _id: item._id }))
+                            dispatch(increaseCount({ _id: item.selectedVariation._id }))
                           }
                         >
                           <AddIcon />
                         </IconButton>
                       </Box>
                       <Typography fontWeight="bold">
-                        ${item.price}
+                        R${(item.preco * (1 - item.off/100)).toFixed(2)}
                       </Typography>
                     </FlexBox>
                   </Box>
@@ -127,11 +141,11 @@ const CartMenu = () => {
           <Box m="20px 0">
             <FlexBox m="20px 0">
               <Typography fontWeight="bold">SUBTOTAL</Typography>
-              <Typography fontWeight="bold">R${totalPrice}</Typography>
+              <Typography fontWeight="bold"><s>R${totalPrice.toFixed(2)}</s> <strong>R${descontoOff.toFixed(2)}</strong></Typography>
             </FlexBox>
             <Button
               sx={{
-                backgroundColor: shades.primary[400],
+                backgroundColor: "#3c0d74",
                 color: "white",
                 borderRadius: 0,
                 minWidth: "100%",
@@ -143,7 +157,7 @@ const CartMenu = () => {
                 dispatch(setIsCartOpen({}));
               }}
             >
-              CHECKOUT
+              CONFIRMAR
             </Button>
           </Box>
         </Box>

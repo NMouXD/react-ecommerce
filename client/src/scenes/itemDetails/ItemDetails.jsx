@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import {
   Box,
   Typography,
@@ -16,6 +15,7 @@ import {
   useTheme,
   Grid,
   TextField,
+  IconButton,
 } from "@mui/material";
 import WhatsAppButton from "../../components/WhatsAppButton";
 import imagePix from "../../assets/iconsMeiosPagamento/logo-pix-png-954x339.png";
@@ -23,8 +23,15 @@ import imageCard from "../../assets/iconsMeiosPagamento/cartao-de-credito.png";
 import { BoxMeiosPagamentos } from "../../components/BoxMeiosPagamentos";
 import { ProdutoCard } from "../../components/ProdutoCard";
 import { Descricao } from "./Descricao";
+import axiosInstance from "../../context/axiosConfig";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, addCount } from "../../state";
+
 
 const ItemDetails = () => {
+  const dispatch = useDispatch();
   const { id } = useParams();
   const [item, setItem] = useState(null);
   const [selectedVariation, setSelectedVariation] = useState("");
@@ -33,17 +40,18 @@ const ItemDetails = () => {
   const [showCep, setShowCep] = useState(false)
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("sm"));
+  const [count, setCount] = useState(1);
+  const cart = useSelector((state) => state.cart.items);
+  console.log(cart)
+  
 
   useEffect(() => {
     const fetchItem = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:3002/admin/productsId/${id}`
+        const response = await axiosInstance.get(
+          `/admin/productsId/${id}`
         );
         setItem(response.data);
-        if (response.data.variacoes && response.data.variacoes.length > 0) {
-          setSelectedVariation(response.data.variacoes[0].nome);
-        }
       } catch (error) {
         console.error("Erro ao buscar dados:", error);
       }
@@ -51,8 +59,8 @@ const ItemDetails = () => {
 
     const getItems = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:3002/admin/getBestSellers"
+        const response = await axiosInstance.get(
+          "/admin/getBestSellers"
         );
         setBestSellers(response.data);
       } catch (error) {
@@ -64,12 +72,26 @@ const ItemDetails = () => {
     getItems();
   }, [id]);
 
-  console.log(item)
+  const handleCart = () => {
+    // Verifica se o item existe
+    const itemExists = cart.find((cartItem) => cartItem.selectedVariation._id === item.selectedVariation._id);
+    // Verifica se a variação selecionada corresponde a uma das variações do item
+    
 
+      console.log(itemExists)
+  
+    // Verifica se o item existe e se a variação selecionada é válida
+    if (!itemExists) {
+      dispatch(addToCart({ item: { ...item, count, selectedVariation } }));
+    } else if (itemExists && itemExists.selectedVariation) {
+      dispatch(addCount({ _id: item.selectedVariation._id, count }))
+    } else {
+      alert("Item ou variação inválidos");
+    }
+  };
+  
   const descontoOff = item ? item.preco * (1 - item.off / 100) : 0;
   const descontoPix = item ? descontoOff * (1 - item.offPix / 100) : 0;
-
-
 
   return (
     <>
@@ -116,13 +138,13 @@ const ItemDetails = () => {
                   <strong>R$ {descontoOff.toFixed(2)}</strong> {item.off}% OFF
                 </Typography>
 
-                {item.variacoes && item.variacoes.length >= 0 && (
+                {item.variacoes && (
                   <FormControl fullWidth margin="normal">
                     <InputLabel>Sabor</InputLabel>
                     <Select
-                      value={selectedVariation}
+                      value={selectedVariation ? selectedVariation.nome : ''}
                       label="Sabor"
-                      onChange={(e) => setSelectedVariation(e.target.value)}
+                      onChange={(e) => setSelectedVariation(item.variacoes.find(variacao => variacao.nome === e.target.value))}
                     >
                       {item.variacoes.map((variacao) => (
                         <MenuItem key={variacao._id} value={variacao.nome}>
@@ -171,14 +193,35 @@ const ItemDetails = () => {
                 {showCep ?
                   (<Box>Chegará sábado por R$ 15,35 no endereço {cep}</Box>) : (<></>)
                 }
-
-                <Button
-                  variant="contained"
-                  color="primary"
-                  sx={{ mt: 2, background: "#3c0d74" }}
-                >
-                  Adicionar ao carrinho
-                </Button>
+                <Box display="flex" alignItems="center" minHeight="50px">
+            <Box
+              display="flex"
+              alignItems="center"
+              border={`1.5px solid black`}
+              mr="20px"
+              p="2px 5px"
+            >
+              <IconButton onClick={() => setCount(Math.max(count - 1, 0))}>
+                <RemoveIcon />
+              </IconButton>
+              <Typography sx={{ p: "0 5px" }}>{count}</Typography>
+              <IconButton onClick={() => setCount(count + 1)}>
+                <AddIcon />
+              </IconButton>
+            </Box>
+            <Button
+              sx={{
+                backgroundColor: "#3c0d74",
+                color: "white",
+                borderRadius: 0,
+                minWidth: "150px",
+                padding: "10px 40px",
+              }}
+              onClick={() => handleCart()}
+            >
+            ADICIONAR AO CARRINHO
+            </Button>
+          </Box>
               </CardContent>
             </Card>
 

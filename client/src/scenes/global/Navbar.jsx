@@ -3,7 +3,6 @@ import { Badge, Box, IconButton } from "@mui/material";
 import {
   PersonOutline,
   ShoppingBagOutlined,
-  MenuOutlined,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { setIsCartOpen } from "../../state";
@@ -78,9 +77,6 @@ function Navbar() {
               <ShoppingBagOutlined />
             </IconButton>
           </Badge>
-          <IconButton sx={{ color: "white" }}>
-            <MenuOutlined />
-          </IconButton>
         </Box>
       </Box>
     </Box>

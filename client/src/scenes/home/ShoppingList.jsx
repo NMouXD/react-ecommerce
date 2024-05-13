@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Tabs, Tab, Grid, useTheme, useMediaQuery } from "@mui/material";
-import axios from "axios";
 import { ProdutoCard } from "../../components/ProdutoCard";
+import axiosInstance from "../../context/axiosConfig";
 
 const ShoppingList = () => {
   const theme = useTheme();
@@ -11,8 +11,8 @@ const ShoppingList = () => {
   const [categoriaAtual, setCategoriaAtual] = useState("");
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3002/admin/productsListen")
+    axiosInstance
+      .get("/admin/productsListen")
       .then((response) => {
         const dados = response.data; // Assumindo que a resposta é um array de produtos
         const produtosOrganizados = dados.reduce((acc, produto) => {

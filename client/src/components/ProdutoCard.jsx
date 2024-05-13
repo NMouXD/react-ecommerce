@@ -7,7 +7,7 @@ export const ProdutoCard = ({ item }) => {
   const matches = useMediaQuery(theme.breakpoints.down('sm'));  // Usa o breakpoint 'sm' que corresponde a 600px
   const navigate = useNavigate();
   const {offPix, off} = item;
-  const desconto = item.preco *  (1- off/100)
+  const desconto = item.preco *  (1- off/100);
   const descontoPix = desconto * (1- offPix/100)
   return (
     <Card sx={{ maxWidth: /* matches ? 170 : */ 345, height: "100%"}} onClick={() => navigate(`/item/${item._id}`)}>
@@ -51,14 +51,13 @@ export const ProdutoCard = ({ item }) => {
             Em até 3x sem juros no CARTÃO
           </Typography>
           <Typography variant="h7" color="black">
-            {/* <strong>R${descontoPix.toFixed(2)}</strong> */} {offPix}% OFF no PIX
+             <strong>R${descontoPix.toFixed(2)}</strong>  {offPix}% OFF no PIX
           </Typography>
           </CardContent>
           <Box sx={{ alignSelf: 'flex-end', width: "100%" }}>
             <Box sx={{
               m: "6px auto",
               p: "5px",
-              borderRadius: "5px",
               textAlign: "center",
               background: "#3c0d74",
               color: "white",

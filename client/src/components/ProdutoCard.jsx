@@ -15,7 +15,7 @@ export const ProdutoCard = ({ item }) => {
         <CardMedia
           component="img"
           sx={{ objectFit: 'cover', }}
-          image={`http://localhost:3002/${item.imagensUrl}`}
+          image={`https://ml-vipe-shop.onrender.com/${item.imagensUrl}`}
           alt={item.nome}
         />
         <Box sx={{

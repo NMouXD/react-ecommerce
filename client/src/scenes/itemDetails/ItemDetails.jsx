@@ -122,7 +122,7 @@ const ItemDetails = () => {
               <CardMedia
                 component="img"
                 sx={{ width: "50%", objectFit: "cover" }}
-                image={`http://localhost:3002/${item.imagensUrl[0]}`}
+                image={`https://ml-vipe-shop.onrender.com/${item.imagensUrl[0]}`}
                 alt={item.nome}
               />
               <CardContent

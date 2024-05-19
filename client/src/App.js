@@ -10,8 +10,7 @@ import Confirmation from "./scenes/checkout/Confirmation";
 import ProductForm from "./admin/admin";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import Login from './components/Login';
-import Signup from './components/Signup';/* 
-import { FetchUser } from "./services/userService"; */
+import Signup from './components/Signup';
 import TermsAndConditions from "./components/TermosCondicoes";
 import PrivacyPolicy from "./components/PoliticaPrivacidade";
 
@@ -26,9 +25,6 @@ const ScrollToTop = () => {
 
   return null;
 };
-
-
-/* FetchUser() */
 
 
 function App() {

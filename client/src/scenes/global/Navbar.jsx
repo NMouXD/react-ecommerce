@@ -12,6 +12,8 @@ function Navbar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.cart);
+  const cartOpen = useSelector((state) => state.cart.isCartOpen);
+  console.log(cartOpen)
 
   const handleClickWhats = () => {
     window.open('https://wa.me/5534997267144', '_blank');
@@ -38,7 +40,10 @@ function Navbar() {
         alignItems="center"
       >
         <Box
-          onClick={() => navigate("/")}
+          onClick={() => {
+            navigate("/");
+            if(cartOpen){dispatch(setIsCartOpen())}
+          }}
           sx={{ "&:hover": { cursor: "pointer" } }}
           color="white"
         >
@@ -51,7 +56,7 @@ function Navbar() {
           zIndex="2"
         >
           <IconButton sx={{ color: "white" }} onClick={handleClickWhats}>
-            <WhatsApp/>
+            <WhatsApp />
           </IconButton>
           <IconButton onClick={() => navigate("/login")} sx={{ color: "white" }}>
             <PersonOutline />

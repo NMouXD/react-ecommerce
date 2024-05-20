@@ -141,7 +141,7 @@ const CartMenu = () => {
           <Box m="20px 0">
             <FlexBox m="20px 0">
               <Typography fontWeight="bold">SUBTOTAL</Typography>
-              <Typography fontWeight="bold"><s>R${totalPrice.toFixed(2)}</s> <strong>R${descontoOff.toFixed(2)}</strong></Typography>
+              <Typography fontWeight="bold">{totalPrice ? <s>R${totalPrice.toFixed(2)}</s> : null} <strong>R${descontoOff.toFixed(2)}</strong></Typography>
             </FlexBox>
             <Button
               sx={{

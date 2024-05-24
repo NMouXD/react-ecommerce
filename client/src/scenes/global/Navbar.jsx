@@ -13,7 +13,6 @@ function Navbar() {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.cart);
   const cartOpen = useSelector((state) => state.cart.isCartOpen);
-  console.log(cartOpen)
 
   const handleClickWhats = () => {
     window.open('https://wa.me/5534997267144', '_blank');

@@ -28,8 +28,6 @@ const CartMenu = () => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("sm"));
 
-  console.log(cart)
-
   const totalPrice = cart.reduce((total, item) => {
     return total + item.count * item.preco;
   }, 0);
@@ -38,11 +36,10 @@ const CartMenu = () => {
     return total + item.count * item.preco * (1 - item.off / 100);
   }, 0);
 
-  const descontoPix = cart.reduce((total, item) => {
+ /*  const descontoPix = cart.reduce((total, item) => {
     return total + item.count * item.preco * (1 - item.offPix / 100);
-  }, 0);
+  }, 0); */
 
-  console.log(descontoOff, descontoPix)
 
   return (
     
@@ -95,7 +92,7 @@ const CartMenu = () => {
                       </Typography>
                       <IconButton
                         onClick={() =>
-                          dispatch(removeFromCart({ id: item._id }))
+                          dispatch(removeFromCart({ _id: item.selectedVariation._id }))
                         }
                       >
                         <CloseIcon />
@@ -109,9 +106,7 @@ const CartMenu = () => {
                         border={`1.5px solid ${shades.neutral[500]}`}
                       >
                         <IconButton
-                          onClick={() =>
-                            dispatch(decreaseCount({ _id: item.selectedVariation._id }))
-                          }
+                          onClick={() => dispatch(decreaseCount({ _id: item.selectedVariation._id }))}
                         >
                           <RemoveIcon />
                         </IconButton>

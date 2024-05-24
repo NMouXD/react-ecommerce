@@ -26,8 +26,8 @@ import { Descricao } from "./Descricao";
 import axiosInstance from "../../context/axiosConfig";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { useDispatch, useSelector } from "react-redux";
-import { addToCart, addCount } from "../../state";
+import { useDispatch} from "react-redux";
+import { addToCart } from "../../state";
 
 
 const ItemDetails = () => {
@@ -41,9 +41,6 @@ const ItemDetails = () => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("sm"));
   const [count, setCount] = useState(1);
-  const cart = useSelector((state) => state.cart.items);
-  console.log(cart)
-  
 
   useEffect(() => {
     const fetchItem = async () => {
@@ -72,23 +69,7 @@ const ItemDetails = () => {
     getItems();
   }, [id]);
 
-  const handleCart = () => {
-    // Verifica se o item existe
-    const itemExists = cart.find((cartItem) => cartItem.selectedVariation._id === item.selectedVariation._id);
-    // Verifica se a variação selecionada corresponde a uma das variações do item
-    
-
-      console.log(itemExists)
   
-    // Verifica se o item existe e se a variação selecionada é válida
-    if (!itemExists) {
-      dispatch(addToCart({ item: { ...item, count, selectedVariation } }));
-    } else if (itemExists && itemExists.selectedVariation) {
-      dispatch(addCount({ _id: item.selectedVariation._id, count }))
-    } else {
-      alert("Item ou variação inválidos");
-    }
-  };
   
   const descontoOff = item ? item.preco * (1 - item.off / 100) : 0;
   const descontoPix = item ? descontoOff * (1 - item.offPix / 100) : 0;
@@ -217,7 +198,7 @@ const ItemDetails = () => {
                 minWidth: "150px",
                 padding: "10px 40px",
               }}
-              onClick={() => handleCart()}
+              onClick={() => dispatch(addToCart({ item: { ...item, count, selectedVariation } }))}
             >
             ADICIONAR AO CARRINHO
             </Button>

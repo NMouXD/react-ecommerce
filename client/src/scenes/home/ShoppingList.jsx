@@ -67,7 +67,7 @@ const ShoppingList = () => {
         scrollButtons={matches ? "auto" : "none"}
         allowScrollButtonsMobile
         aria-label="Categorias dos produtos"
-        centered={true}
+        centered="true"
         sx={{
           marginBottom: "2rem"
         }}
